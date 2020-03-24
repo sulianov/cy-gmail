@@ -14,7 +14,22 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+
+// Don't fail the test in case of uncaught exception
+import "./commands";
+Cypress.on("uncaught:exception", (err, runnable) => {
+  // returning false here prevents Cypress from
+  // failing the test
+  return false;
+});
+
+// Don't log all POST and GET XHR to cy log.
+// BE MORE SPECIFIC IN WHITELISTING IN CASE YOU WILL NEED TO STUB ANY OF XHR
+Cypress.Server.defaults({
+  whitelist: xhr => {
+    return xhr.method === "POST" || "GET";
+  }
+});
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
